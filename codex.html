@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Overlay Widget Demo</title>
+  <style>
+    /* Basic styling for the page */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      overflow: hidden;
+    }
+
+    /* Text overlay for prototype disclaimer */
+    .background-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ddd;
+      font-size: 1.5rem;
+      text-align: center;
+      width: 90%;
+      pointer-events: none;
+      line-height: 1.5;
+    }
+
+    /* Main floating button styling */
+    .floating-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: #FF9900;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      user-select: none;
+    }
+
+    /* Pop-up menu styling */
+    .popup-menu {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .popup-menu .menu-item {
+      width: 150px;
+      background-color: #ffffff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin: 8px 0;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .popup-menu .menu-item:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+
+    /* Icon styling */
+    .menu-item i {
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating button that toggles the popup menu -->
+  <div class="floating-btn" id="floatingBtn" onclick="togglePopup()">
+    ☰
+  </div>
+
+  <!-- Pop-up menu items -->
+  <div class="popup-menu" id="popupMenu">
+    <div class="menu-item">
+      <i>🔍</i> Compare Prices
+    </div>
+    <div class="menu-item">
+      <i>📸</i> SnapShop
+    </div>
+    <div class="menu-item">
+      <i>🤖</i> AI Chat Box
+    </div>
+    <div class="menu-item">
+      <i>📦</i> Order Details
+    </div>
+  </div>
+
+  <!-- Background Text for Prototype Disclaimer -->
+  <div class="background-text">
+    This is a prototype model to showcase the widget idea. No backend code is implemented in this demo.
+  </div>
+
+  <script>
+    // Function to toggle the pop-up menu
+    function togglePopup() {
+      var popup = document.getElementById("popupMenu");
+      if (popup.style.display === "none" || popup.style.display === "") {
+        popup.style.display = "flex";
+      } else {
+        popup.style.display = "none";
+      }
+    }
+
+    // Draggable functionality for the floating button
+    const floatingBtn = document.getElementById("floatingBtn");
+    let offsetX, offsetY;
+
+    floatingBtn.addEventListener("mousedown", (e) => {
+      offsetX = e.clientX - floatingBtn.getBoundingClientRect().left;
+      offsetY = e.clientY - floatingBtn.getBoundingClientRect().top;
+      document.addEventListener("mousemove", moveAt);
+      document.addEventListener("mouseup", stopDrag);
+    });
+
+    function moveAt(e) {
+      floatingBtn.style.left = e.clientX - offsetX + "px";
+      floatingBtn.style.top = e.clientY - offsetY + "px";
+      floatingBtn.style.bottom = "auto"; // Remove the fixed bottom position for dragging
+      floatingBtn.style.right = "auto";  // Remove the fixed right position for dragging
+    }
+
+    function stopDrag() {
+      document.removeEventListener("mousemove", moveAt);
+      document.removeEventListener("mouseup", stopDrag);
+    }
+  </script>
+
+</body>
+</html>
